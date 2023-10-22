@@ -23,7 +23,7 @@ def Cleaning_function(df):
     #Clean Filter out all the information of the fatalities
     replacement_dict = {
     ' N': 'N',
-    'N ': 'N',
+    'N ': 'N', f
     'M': 'Unknown',
     '2017': 'Unknown',
     'y': 'Y',
