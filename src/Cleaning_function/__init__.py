@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import seaborn as sns
 
-def Cleaning_function():
-    df = pd.read_csv("../data/attacks.csv",sep=',' ,encoding= 'latin_1')
+def Cleaning_function(df: pd.DataFrame):
+    #df = pd.read_csv("../data/attacks.csv",sep=',' ,encoding= 'latin_1')
     # Rename columns
     df.columns = df.columns.str.replace(' ', '_').str.lower().str.strip().str.rstrip('_')
     
@@ -62,5 +62,5 @@ def Cleaning_function():
     df.index = index_copy # type: ignore
     diff = df.index[0] - 1
     df.index = df.index - diff
-    #df_imported = pd.read_csv("Sharck_Attack_cleaned.csv")
-    return df_imported
+
+    return df
