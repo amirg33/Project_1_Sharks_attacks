@@ -95,4 +95,43 @@ def Cleaning_function(df: pd.DataFrame):
     #reset the index
     df_Data_cleaned_reset = df.reset_index()
 
+    df['age'] = df['age'].str.strip()  # Remove white spaces
+
+    def clean_age(age):
+        if pd.isna(age):  # NaN values
+            return np.nan
+
+        if age.isdigit():  #  pure numbers
+            return int(age)
+
+        if "&" in age:  #  multiple ages separated by &
+            ages = age.split('&')
+            return int(sum([int(a) for a in ages if a.strip().isdigit()]) / len(ages))
+
+        if "to" in age or "-" in age:  # handle age ranges
+            ages = age.replace("to", "-").split('-')
+            return int(sum([int(a) for a in ages if a.strip().isdigit()]) / len(ages))
+
+        # Other datasets
+        if age == "young":
+            return 20
+        if age == "mid-20s":
+            return 25
+        if age == "mid-30s":
+            return 35
+        if age == "Elderly":
+            return 70
+        if age == "Teen" or age == "Teens":
+            return 15
+
+        return np.nan  # default to NaN for any other case
+
+    df['age'] = df['age'].apply(clean_age)
+    df['age'] = df['age'].astype(str)
+    df['age'] = df['age'].str.strip()
+    df['age'].replace('nan', np.nan, inplace=True)
+    # Convert valid age strings to numeric values
+    df['age'] = pd.to_numeric(df['age'], errors='coerce')
+
+
     return df_Data_cleaned_reset
